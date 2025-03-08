@@ -11,7 +11,7 @@ def main():
     generator_kits = generator_builder.groupKits(stock_data)
 
     data_exporter = DataExporter()
-    data_exporter.buildCSVFile(generator_kits, "generator_kits.csv")
+    data_exporter.buildCSVFile(generator_kits, "generator_kits.csv", ["ID Gerador", "Potencia em W", "ID Produto", "Nome do Produto", "Quantidade Item"])
 
 if __name__ == '__main__':
     main()
