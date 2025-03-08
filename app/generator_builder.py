@@ -35,13 +35,22 @@ class GeneratorBuilder:
             if len(potencia_values) == 1:
                 generator_counter += 1
 
-                self.add_group_id(kit, generator_counter)
+                self.treat_data_to_export(kit, generator_counter)
 
                 valid_combinations.append(list(kit))
 
         return valid_combinations
 
-    def add_group_id(self, kit, generator_counter):
+    # Trata os dados para exportação 
+    def treat_data_to_export(self, kit, generator_counter):
 
+        # Percorre por todos os itens do kit válido
         for item in kit:
+            # Adiciona id do gerador
             item["ID Gerador"] = str(generator_counter).zfill(5)
+            
+            # Adiciona coluna quantidade item (TODO: Ainda necessário elaborar lógica de casos com mais de um item)
+            item["Quantidade Item"] = 1
+
+            # Verifica e remove Categoria caso não tenha sido removida anteriormente
+            if "Categoria" in item: item.pop("Categoria")
