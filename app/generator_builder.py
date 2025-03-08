@@ -42,10 +42,10 @@ class GeneratorBuilder:
         return valid_combinations
 
     # Trata os dados para exportação 
-    def treatDataToExport(self, kit, generator_counter):
+    def treatDataToExport(self, generator_kits, generator_counter):
 
         # Percorre por todos os itens do kit válido
-        for item in kit:
+        for item in generator_kits:
             # Adiciona id do gerador
             item["ID Gerador"] = str(generator_counter).zfill(5)
             
@@ -54,3 +54,7 @@ class GeneratorBuilder:
 
             # Verifica e remove Categoria caso não tenha sido removida anteriormente
             if "Categoria" in item: item.pop("Categoria")
+
+            # Muda nomes de colunas para se adequar ao formato final da exportação
+            if "Id" in item: item["ID Produto"] = item.pop("Id")
+            if "Produto" in item: item["Nome do Produto"] = item.pop("Produto")
