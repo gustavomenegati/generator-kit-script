@@ -8,7 +8,7 @@ def main():
 
     generator_builder = GeneratorBuilder()
 
-    generator_kits = generator_builder.group_kits(stock_data)
+    generator_kits = generator_builder.groupKits(stock_data)
 
     data_exporter = DataExporter()
     data_exporter.buildCSVFile(generator_kits, "generator_kits.csv")

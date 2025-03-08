@@ -4,7 +4,7 @@ from collections import defaultdict
 class GeneratorBuilder:
 
     # Criação de um dicionário que agrupa equipamentos de acordo com sua categoria
-    def group_stock_by_category(self, stock_data):
+    def groupStockByCategory(self, stock_data):
 
         stock_data_by_category = defaultdict(list)
 
@@ -15,11 +15,11 @@ class GeneratorBuilder:
 
 
     # Agrupamento dos kits de geradores
-    def group_kits(self, stock_data):
+    def groupKits(self, stock_data):
 
         generator_counter = 0
 
-        stock_data_by_category = self.group_stock_by_category(stock_data)
+        stock_data_by_category = self.groupStockByCategory(stock_data)
 
         # Usa produto cartesiano para obter todas as combinações possíveis.
         all_possible_combinations = list(itertools.product(*stock_data_by_category.values()))
@@ -35,14 +35,14 @@ class GeneratorBuilder:
             if len(potencia_values) == 1:
                 generator_counter += 1
 
-                self.treat_data_to_export(kit, generator_counter)
+                self.treatDataToExport(kit, generator_counter)
 
                 valid_combinations.append(list(kit))
 
         return valid_combinations
 
     # Trata os dados para exportação 
-    def treat_data_to_export(self, kit, generator_counter):
+    def treatDataToExport(self, kit, generator_counter):
 
         # Percorre por todos os itens do kit válido
         for item in kit:
