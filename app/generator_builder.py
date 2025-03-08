@@ -15,7 +15,11 @@ class GeneratorBuilder:
 
 
     # Agrupamento dos kits de geradores
-    def group_kits(self, stock_data_by_category):
+    def group_kits(self, stock_data):
+
+        generator_counter = 0
+
+        stock_data_by_category = self.group_stock_by_category(stock_data)
 
         # Usa produto cartesiano para obter todas as combinações possíveis.
         all_possible_combinations = list(itertools.product(*stock_data_by_category.values()))
@@ -29,6 +33,15 @@ class GeneratorBuilder:
 
             # Se todos forem os mesmos, teremos exatamente 1 elemento.
             if len(potencia_values) == 1:
+                generator_counter += 1
+
+                self.add_group_id(kit, generator_counter)
+
                 valid_combinations.append(list(kit))
 
         return valid_combinations
+
+    def add_group_id(self, kit, generator_counter):
+
+        for item in kit:
+            item["ID Gerador"] = str(generator_counter).zfill(5)
