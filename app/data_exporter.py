@@ -5,7 +5,7 @@ class DataExporter():
     # Recebe dados já tratados e gera o arquivo .csv
     def buildCSVFile(self, data, csv_filename):
 
-        # Normaliza o dado para csv
+        # Unifica as listas em apenas uma para facilitar expçortação
         flat_data = [item for sublist in data for item in sublist]
 
         # Identifica nome das colunas a partir do primeiro elemento dos dados
