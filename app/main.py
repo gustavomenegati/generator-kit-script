@@ -4,7 +4,7 @@ from data_exporter import DataExporter
 
 def main():
     data_extractor = DataExtractor()
-    stock_data = data_extractor.read_json_file("data-resources/stock.json")
+    stock_data = data_extractor.readJsonFile("data-resources/stock.json")
 
     generator_builder = GeneratorBuilder()
 
