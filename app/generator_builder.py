@@ -31,13 +31,26 @@ class GeneratorBuilder:
     def searchValidCombinations(self, all_possible_combinations):
         # Filtra combinações onde todos os itens tem a mesma "Potencia em W"
         valid_combinations = []
-        for kit in all_possible_combinations:
-            
-            # Extrai "Potencia em W" de cada dicionário na combinação
-            potencia_values = {item['Potencia em W'] for item in kit}
 
-            # Se todos forem os mesmos, teremos exatamente 1 elemento.
-            if len(potencia_values) == 1:
+        for kit in all_possible_combinations:
+            # Cria um mapeamento rápido: Categoria -> item
+            itens = {item['Categoria']: item for item in kit}
+
+            # Extrai os itens de cada categoria
+            panel = itens.get('Painel Solar')
+            inversor = itens.get('Inversor')
+            controller = itens.get('Controlador de carga')
+
+            # Verifica se realmente temos os 3 elementos no kit
+            if not (panel and inversor and controller):
+                continue
+
+            panel_power = panel['Potencia em W']
+            inversor_power = inversor['Potencia em W']
+            controller_power = controller['Potencia em W']
+
+            # Verifica relações válidas entre potências (iguais ou painel tendo como potência um divisor da potência dos demais equipamentos)
+            if (panel_power == inversor_power == controller_power) or (inversor_power == controller_power and (inversor_power % panel_power == 0)):
                 valid_combinations.append(list(kit))
 
         treated_combinations = self.treatDataToExport(valid_combinations)
@@ -60,9 +73,25 @@ class GeneratorBuilder:
 
                 # Adiciona id do gerador
                 item_copy["ID Gerador"] = str(generator_counter).zfill(5)
-                
-                # Adiciona coluna quantidade item (TODO: Ainda necessário elaborar lógica de casos com mais de um item)
-                item_copy["Quantidade Item"] = 1
+
+                # Define a quantidade do item (caso Painel Solar, identifica quantos são necessários para o gerador)
+                if item_copy["Categoria"] == "Painel Solar":
+                    # Cria um mapeamento rápido: Categoria -> item
+                    itens = {item['Categoria']: item for item in kit}
+
+                    # Utiliza a potência do inversor para definir a potência do gerador
+                    inversor = itens.get('Inversor')
+                    generator_power = inversor["Potencia em W"]
+                    panel_power = item_copy["Potencia em W"]
+
+                    # Calcula quantidade de paineis necessários
+                    panels_quantity = int(generator_power / panel_power)
+                    item_copy["Quantidade Item"] = panels_quantity
+
+                    # Atualiza potência do gerador
+                    item_copy["Potencia em W"] = generator_power
+                else:
+                    item_copy["Quantidade Item"] = 1
 
                 # Verifica e remove Categoria caso não tenha sido removida anteriormente
                 if "Categoria" in item_copy: item_copy.pop("Categoria")
