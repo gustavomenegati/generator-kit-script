@@ -3,8 +3,7 @@ from collections import defaultdict
 
 class GeneratorBuilder:
 
-    # Criação de um dicionário que agrupa equipamentos de acordo com sua categoria
-    def group_stock_by_category(self, stock_data):
+    def groupStockByCategory(self, stock_data):
 
         stock_data_by_category = defaultdict(list)
 
@@ -15,11 +14,21 @@ class GeneratorBuilder:
 
 
     # Agrupamento dos kits de geradores
-    def group_kits(self, stock_data_by_category):
+    def groupKits(self, stock_data):
+
+        # Criação de um dicionário que agrupa equipamentos de acordo com sua categoria
+        stock_data_by_category = self.groupStockByCategory(stock_data)
 
         # Usa produto cartesiano para obter todas as combinações possíveis.
         all_possible_combinations = list(itertools.product(*stock_data_by_category.values()))
 
+        # Identifica combinações válidas
+        valid_combinations = self.searchValidCombinations(all_possible_combinations)
+        
+        return valid_combinations
+
+
+    def searchValidCombinations(self, all_possible_combinations):
         # Filtra combinações onde todos os itens tem a mesma "Potencia em W"
         valid_combinations = []
         for kit in all_possible_combinations:
@@ -31,4 +40,38 @@ class GeneratorBuilder:
             if len(potencia_values) == 1:
                 valid_combinations.append(list(kit))
 
-        return valid_combinations
+        treated_combinations = self.treatDataToExport(valid_combinations)
+
+        return treated_combinations
+
+    # Trata os dados para exportação 
+    def treatDataToExport(self, generator_kits):
+        treated_combinations = []
+        generator_counter = 0
+
+        for kit in generator_kits:
+            generator_counter += 1
+            treated_combinations.append([])
+
+            # Percorre por todos os itens do kit válido
+            for item in kit:
+
+                item_copy = item.copy()
+
+                # Adiciona id do gerador
+                item_copy["ID Gerador"] = str(generator_counter).zfill(5)
+                
+                # Adiciona coluna quantidade item (TODO: Ainda necessário elaborar lógica de casos com mais de um item)
+                item_copy["Quantidade Item"] = 1
+
+                # Verifica e remove Categoria caso não tenha sido removida anteriormente
+                if "Categoria" in item_copy: item_copy.pop("Categoria")
+
+                # Muda nomes de colunas para se adequar ao formato final da exportação
+                if "Id" in item_copy: item_copy["ID Produto"] = item_copy.pop("Id")
+                if "Produto" in item_copy: item_copy["Nome do Produto"] = item_copy.pop("Produto")
+                if "Potencia em W" in item_copy: item_copy["Potência do Gerador (em W)"] = item_copy.pop("Potencia em W")
+
+                treated_combinations[generator_counter - 1].append(item_copy)
+
+        return treated_combinations
