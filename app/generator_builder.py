@@ -51,13 +51,6 @@ class GeneratorBuilder:
 
             # Verifica relações válidas entre potências (iguais ou painel tendo como potência um divisor da potência dos demais equipamentos)
             if (panel_power == inversor_power == controller_power) or (inversor_power == controller_power and (inversor_power % panel_power == 0)):
-
-                # Define a quantidade de cada equipamento
-                panels_quantity = int(inversor_power / panel_power)
-                panel["Quantidade Item"] = panels_quantity
-                inversor["Quantidade Item"] = 1
-                controller["Quantidade Item"] = 1
-                
                 valid_combinations.append(list(kit))
 
         treated_combinations = self.treatDataToExport(valid_combinations)
@@ -80,6 +73,25 @@ class GeneratorBuilder:
 
                 # Adiciona id do gerador
                 item_copy["ID Gerador"] = str(generator_counter).zfill(5)
+
+                # Define a quantidade do item (caso Painel Solar, identifica quantos são necessários para o gerador)
+                if item_copy["Categoria"] == "Painel Solar":
+                    # Cria um mapeamento rápido: Categoria -> item
+                    itens = {item['Categoria']: item for item in kit}
+
+                    # Utiliza a potência do inversor para definir a potência do gerador
+                    inversor = itens.get('Inversor')
+                    generator_power = inversor["Potencia em W"]
+                    panel_power = item_copy["Potencia em W"]
+
+                    # Calcula quantidade de paineis necessários
+                    panels_quantity = int(generator_power / panel_power)
+                    item_copy["Quantidade Item"] = panels_quantity
+
+                    # Atualiza potência do gerador
+                    item_copy["Potencia em W"] = generator_power
+                else:
+                    item_copy["Quantidade Item"] = 1
 
                 # Verifica e remove Categoria caso não tenha sido removida anteriormente
                 if "Categoria" in item_copy: item_copy.pop("Categoria")
