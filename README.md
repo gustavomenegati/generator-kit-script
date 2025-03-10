@@ -10,11 +10,18 @@ Observação: Para realizar o desenvolvimento, utilizei o **WSL**(_Windows Subsy
 - Docker
 
 ## Instalação
-Com o _Docker_ já instalado no seu computador (dentro do _WSL_ caso esteja utilizando) execute `git clone git@github.com:gustavomenegati/generator-kit-script.git` para clonar o repositório via _SSH_ ou baixe a aplicação compactada clicando no botão _*Code*_ e *_Download ZIP_* no link https://github.com/gustavomenegati/generator-kit-script.
+
+Para instalar o **WSL**, execute `wsl --install -d <Distribution Name>`, sendo possível encontrar as distribuições executando `wsl --list --online`, caso deseje outra que não seja **Ubuntu-24.04**. Tendo algum problema após isso, consulte a documentação oficial em https://learn.microsoft.com/pt-br/windows/wsl/install
+
+Feito isso, para instalar o Docker, acesse o seu **WSL**, executando `Ubuntu` no terminal. Em seguida execute `apt install docker` (isso para **Ubuntu**). Se houver algum problema, verifique a documentação oficial em https://docs.docker.com/desktop/features/wsl/
+
+Com o _Docker_ já instalado no seu computador (dentro do _WSL_ caso esteja utilizando) execute `git clone https://github.com/gustavomenegati/generator-kit-script.git` para clonar o repositório via _HTTPS_ ou baixe a aplicação compactada clicando no botão _*Code*_ e *_Download ZIP_* no link https://github.com/gustavomenegati/generator-kit-script.
 
 ## Uso
 
 ### Configuração
+
+Acesse a pasta da aplicação acesse o diretório raiz da aplicação(caso baixe o arquivo direto, ele pode estar com o nome **generator-kit-script-main**)
 
 Esse projeto lê uma base de dados em json, fornecida no diretório **data-resources** no seguinte formato (exemplo com dados _Mock_):
 
