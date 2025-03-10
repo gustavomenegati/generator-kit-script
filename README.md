@@ -15,7 +15,7 @@ Para instalar o **WSL**, execute `wsl --install -d <Distribution Name>`, sendo p
 
 Feito isso, para instalar o Docker, acesse o seu **WSL**, executando `Ubuntu` no terminal. Em seguida execute `apt install docker` (isso para **Ubuntu**). Se houver algum problema, verifique a documentação oficial em https://docs.docker.com/desktop/features/wsl/
 
-Com o _Docker_ já instalado no seu computador (dentro do _WSL_ caso esteja utilizando) execute `git clone https://github.com/gustavomenegati/generator-kit-script.git` para clonar o repositório via _HTTPS_ ou baixe a aplicação compactada clicando no botão _*Code*_ e *_Download ZIP_* no link https://github.com/gustavomenegati/generator-kit-script.
+Com o _Docker_ já instalado no seu computador (dentro do _WSL_ caso esteja utilizando) execute `git clone https://github.com/gustavomenegati/generator-kit-script.git` para clonar o repositório via _HTTPS_ ou baixe a aplicação compactada clicando no botão _*Code*_ e *_Download ZIP_* no link https://github.com/gustavomenegati/generator-kit-script, descompactando-a em um diretório dentro do seu **WSL**.
 
 ## Uso
 
